@@ -51,4 +51,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Update animated profile assets"
-          file_pattern: "avi-ascii.svg info-card.svg assets/image.png assets/source-prepped.png"
+          file_pattern: "avi-ascii.svg info-card.svg assets/image.png"
