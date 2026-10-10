@@ -30,13 +30,20 @@ jobs:
       - name: Generate animated ASCII SVG
         run: python scripts/make_ascii_svg.py
 
-      - name: Remove source images from generated workspace
+      - name: Validate generated SVG
+        run: |
+          test -s avi-ascii.svg
+          grep -q "<svg" avi-ascii.svg
+          echo "Portrait SVG generated successfully."
+
+      - name: Remove original and processed photos
         run: |
           rm -f assets/image.png
+          rm -f assets/source-photo.jpg
           rm -f assets/source-prepped.png
 
-      - name: Commit generated portrait
+      - name: Commit generated portrait and remove original
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Add generated ASCII portrait"
-          file_pattern: "avi-ascii.svg assets/source-photo.jpg assets/source-prepped.png"
+          commit_message: "Generate ASCII portrait"
+          file_pattern: "avi-ascii.svg assets/image.png"
