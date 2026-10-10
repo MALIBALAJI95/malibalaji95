@@ -1,4 +1,4 @@
-name: Generate ASCII Portrait
+name: Generate Profile Assets
 
 on:
   workflow_dispatch:
@@ -7,7 +7,7 @@ permissions:
   contents: write
 
 jobs:
-  generate-portrait:
+  generate-profile-assets:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,23 +27,28 @@ jobs:
       - name: Prepare portrait
         run: python scripts/prep_photo.py
 
-      - name: Generate animated ASCII SVG
+      - name: Generate animated ASCII portrait
         run: python scripts/make_ascii_svg.py
 
-      - name: Validate generated SVG
+      - name: Generate animated info card
+        run: python scripts/make_info_card.py
+
+      - name: Validate generated assets
         run: |
           test -s avi-ascii.svg
+          test -s info-card.svg
           grep -q "<svg" avi-ascii.svg
-          echo "Portrait SVG generated successfully."
+          grep -q "<svg" info-card.svg
+          echo "All profile assets generated successfully."
 
-      - name: Remove original and processed photos
+      - name: Remove source photos
         run: |
           rm -f assets/image.png
           rm -f assets/source-photo.jpg
           rm -f assets/source-prepped.png
 
-      - name: Commit generated portrait and remove original
+      - name: Commit generated assets
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Generate ASCII portrait"
-          file_pattern: "avi-ascii.svg assets/image.png"
+          commit_message: "Update animated profile assets"
+          file_pattern: "avi-ascii.svg info-card.svg assets/image.png assets/source-prepped.png"
