@@ -1,0 +1,42 @@
+name: Generate ASCII Portrait
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate-portrait:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install portrait dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r scripts/requirements-portrait.txt
+
+      - name: Prepare portrait
+        run: python scripts/prep_photo.py
+
+      - name: Generate animated ASCII SVG
+        run: python scripts/make_ascii_svg.py
+
+      - name: Remove source images from generated workspace
+        run: |
+          rm -f assets/image.png
+          rm -f assets/source-prepped.png
+
+      - name: Commit generated portrait
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Add generated ASCII portrait"
+          file_pattern: "avi-ascii.svg assets/source-photo.jpg assets/source-prepped.png"
