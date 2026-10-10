@@ -208,7 +208,7 @@
 <rect x="434" y="97" width="11" height="11" rx="3" fill="#161b22" data-date="2026-04-08"><title>2026-04-08: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.417s" fill="freeze"/></rect>
 <rect x="434" y="112" width="11" height="11" rx="3" fill="#161b22" data-date="2026-04-09"><title>2026-04-09: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.452s" fill="freeze"/></rect>
 <rect x="434" y="127" width="11" height="11" rx="3" fill="#161b22" data-date="2026-04-10"><title>2026-04-10: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.487s" fill="freeze"/></rect>
-<rect x="434" y="142" width="11" height="11" rx="3" fill="#39d353" data-date="2026-04-11"><title>2026-04-11: level 4</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.522s" fill="freeze"/></rect>
+<rect x="434" y="142" width="11" height="11" rx="3" fill="#26a641" data-date="2026-04-11"><title>2026-04-11: level 3</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.522s" fill="freeze"/></rect>
 <rect x="449" y="52" width="11" height="11" rx="3" fill="#006d32" data-date="2026-04-12"><title>2026-04-12: level 2</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.324s" fill="freeze"/></rect>
 <rect x="449" y="67" width="11" height="11" rx="3" fill="#0e4429" data-date="2026-04-13"><title>2026-04-13: level 1</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.359s" fill="freeze"/></rect>
 <rect x="449" y="82" width="11" height="11" rx="3" fill="#0e4429" data-date="2026-04-14"><title>2026-04-14: level 1</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.394s" fill="freeze"/></rect>
@@ -224,7 +224,7 @@
 <rect x="464" y="127" width="11" height="11" rx="3" fill="#161b22" data-date="2026-04-24"><title>2026-04-24: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.511s" fill="freeze"/></rect>
 <rect x="464" y="142" width="11" height="11" rx="3" fill="#161b22" data-date="2026-04-25"><title>2026-04-25: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.546s" fill="freeze"/></rect>
 <rect x="479" y="52" width="11" height="11" rx="3" fill="#161b22" data-date="2026-04-26"><title>2026-04-26: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.348s" fill="freeze"/></rect>
-<rect x="479" y="67" width="11" height="11" rx="3" fill="#26a641" data-date="2026-04-27"><title>2026-04-27: level 3</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.383s" fill="freeze"/></rect>
+<rect x="479" y="67" width="11" height="11" rx="3" fill="#006d32" data-date="2026-04-27"><title>2026-04-27: level 2</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.383s" fill="freeze"/></rect>
 <rect x="479" y="82" width="11" height="11" rx="3" fill="#161b22" data-date="2026-04-28"><title>2026-04-28: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.418s" fill="freeze"/></rect>
 <rect x="479" y="97" width="11" height="11" rx="3" fill="#161b22" data-date="2026-04-29"><title>2026-04-29: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.453s" fill="freeze"/></rect>
 <rect x="479" y="112" width="11" height="11" rx="3" fill="#161b22" data-date="2026-04-30"><title>2026-04-30: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.488s" fill="freeze"/></rect>
@@ -244,7 +244,7 @@
 <rect x="509" y="112" width="11" height="11" rx="3" fill="#161b22" data-date="2026-05-14"><title>2026-05-14: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.512s" fill="freeze"/></rect>
 <rect x="509" y="127" width="11" height="11" rx="3" fill="#161b22" data-date="2026-05-15"><title>2026-05-15: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.547s" fill="freeze"/></rect>
 <rect x="509" y="142" width="11" height="11" rx="3" fill="#0e4429" data-date="2026-05-16"><title>2026-05-16: level 1</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.582s" fill="freeze"/></rect>
-<rect x="524" y="52" width="11" height="11" rx="3" fill="#39d353" data-date="2026-05-17"><title>2026-05-17: level 4</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.384s" fill="freeze"/></rect>
+<rect x="524" y="52" width="11" height="11" rx="3" fill="#26a641" data-date="2026-05-17"><title>2026-05-17: level 3</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.384s" fill="freeze"/></rect>
 <rect x="524" y="67" width="11" height="11" rx="3" fill="#161b22" data-date="2026-05-18"><title>2026-05-18: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.419s" fill="freeze"/></rect>
 <rect x="524" y="82" width="11" height="11" rx="3" fill="#006d32" data-date="2026-05-19"><title>2026-05-19: level 2</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.454s" fill="freeze"/></rect>
 <rect x="524" y="97" width="11" height="11" rx="3" fill="#006d32" data-date="2026-05-20"><title>2026-05-20: level 2</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.489s" fill="freeze"/></rect>
@@ -269,7 +269,7 @@
 <rect x="569" y="67" width="11" height="11" rx="3" fill="#161b22" data-date="2026-06-08"><title>2026-06-08: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.455s" fill="freeze"/></rect>
 <rect x="569" y="82" width="11" height="11" rx="3" fill="#161b22" data-date="2026-06-09"><title>2026-06-09: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.490s" fill="freeze"/></rect>
 <rect x="569" y="97" width="11" height="11" rx="3" fill="#161b22" data-date="2026-06-10"><title>2026-06-10: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.525s" fill="freeze"/></rect>
-<rect x="569" y="112" width="11" height="11" rx="3" fill="#26a641" data-date="2026-06-11"><title>2026-06-11: level 3</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.560s" fill="freeze"/></rect>
+<rect x="569" y="112" width="11" height="11" rx="3" fill="#006d32" data-date="2026-06-11"><title>2026-06-11: level 2</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.560s" fill="freeze"/></rect>
 <rect x="569" y="127" width="11" height="11" rx="3" fill="#006d32" data-date="2026-06-12"><title>2026-06-12: level 2</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.595s" fill="freeze"/></rect>
 <rect x="569" y="142" width="11" height="11" rx="3" fill="#161b22" data-date="2026-06-13"><title>2026-06-13: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.630s" fill="freeze"/></rect>
 <rect x="584" y="52" width="11" height="11" rx="3" fill="#006d32" data-date="2026-06-14"><title>2026-06-14: level 2</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.432s" fill="freeze"/></rect>
@@ -281,7 +281,7 @@
 <rect x="584" y="142" width="11" height="11" rx="3" fill="#161b22" data-date="2026-06-20"><title>2026-06-20: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.642s" fill="freeze"/></rect>
 <rect x="599" y="52" width="11" height="11" rx="3" fill="#006d32" data-date="2026-06-21"><title>2026-06-21: level 2</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.444s" fill="freeze"/></rect>
 <rect x="599" y="67" width="11" height="11" rx="3" fill="#161b22" data-date="2026-06-22"><title>2026-06-22: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.479s" fill="freeze"/></rect>
-<rect x="599" y="82" width="11" height="11" rx="3" fill="#26a641" data-date="2026-06-23"><title>2026-06-23: level 3</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.514s" fill="freeze"/></rect>
+<rect x="599" y="82" width="11" height="11" rx="3" fill="#006d32" data-date="2026-06-23"><title>2026-06-23: level 2</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.514s" fill="freeze"/></rect>
 <rect x="599" y="97" width="11" height="11" rx="3" fill="#0e4429" data-date="2026-06-24"><title>2026-06-24: level 1</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.549s" fill="freeze"/></rect>
 <rect x="599" y="112" width="11" height="11" rx="3" fill="#161b22" data-date="2026-06-25"><title>2026-06-25: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.584s" fill="freeze"/></rect>
 <rect x="599" y="127" width="11" height="11" rx="3" fill="#161b22" data-date="2026-06-26"><title>2026-06-26: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.619s" fill="freeze"/></rect>
@@ -390,7 +390,7 @@
 <rect x="824" y="97" width="11" height="11" rx="3" fill="#161b22" data-date="2026-10-07"><title>2026-10-07: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.729s" fill="freeze"/></rect>
 <rect x="824" y="112" width="11" height="11" rx="3" fill="#161b22" data-date="2026-10-08"><title>2026-10-08: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.764s" fill="freeze"/></rect>
 <rect x="824" y="127" width="11" height="11" rx="3" fill="#161b22" data-date="2026-10-09"><title>2026-10-09: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.799s" fill="freeze"/></rect>
-<rect x="824" y="142" width="11" height="11" rx="3" fill="#26a641" data-date="2026-10-10"><title>2026-10-10: level 3</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.834s" fill="freeze"/></rect>
+<rect x="824" y="142" width="11" height="11" rx="3" fill="#39d353" data-date="2026-10-10"><title>2026-10-10: level 4</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.834s" fill="freeze"/></rect>
 <text x="44" y="180" fill="#8b949e" font-family="monospace" font-size="10">Less</text>
 <rect x="77" y="170" width="11" height="11" rx="3" fill="#161b22"/>
 <rect x="92" y="170" width="11" height="11" rx="3" fill="#0e4429"/>
