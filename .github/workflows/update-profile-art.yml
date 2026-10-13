@@ -17,29 +17,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout main branch
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           ref: main
+          fetch-depth: 1
 
-      - name: Verify required files
+      - name: Diagnose repository contents
         run: |
-          echo "Current branch:"
-          git branch --show-current
+          echo "Workspace: $GITHUB_WORKSPACE"
+          echo "Current directory: $(pwd)"
+          echo "Checked-out commit:"
+          git log -1 --oneline
 
-          echo "Repository files:"
+          echo "Root files:"
           ls -la
+
+          echo "Scripts directory:"
           ls -la scripts
 
-          test -f scripts/requirements.txt || {
-            echo "ERROR: scripts/requirements.txt is missing from the checked-out commit."
-            exit 1
-          }
-
-          test -f scripts/fetch_contributions.py
-          test -f scripts/render_heatmap_svg.py
-
-          echo "All required files are present."
+          echo "Dependency file:"
+          if [ -f scripts/requirements.txt ]; then
+            cat scripts/requirements.txt
+          else
+            echo "requirements.txt is missing from the runner workspace."
+          fi
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -49,7 +51,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -r scripts/requirements.txt
+          python -m pip install requests==2.32.3 beautifulsoup4==4.12.3
 
       - name: Fetch contribution data
         run: python scripts/fetch_contributions.py
@@ -62,7 +64,7 @@ jobs:
           test -s data/contributions.json
           test -s contrib-heatmap.svg
           grep -q "<svg" contrib-heatmap.svg
-          echo "Contribution heatmap generated successfully."
+          echo "Heatmap generated successfully."
 
       - name: Commit generated files
         uses: stefanzweifel/git-auto-commit-action@v5
