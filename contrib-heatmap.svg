@@ -398,6 +398,6 @@
 <rect x="122" y="170" width="11" height="11" rx="3" fill="#26a641"/>
 <rect x="137" y="170" width="11" height="11" rx="3" fill="#39d353"/>
 <text x="155" y="180" fill="#8b949e" font-family="monospace" font-size="10">More</text>
-<text x="44" y="208" fill="#c9d1d9" font-family="monospace" font-size="10">Current streak: 2 days</text>
+<text x="44" y="208" fill="#c9d1d9" font-family="monospace" font-size="10">Current streak: 3 days</text>
 <text x="224" y="208" fill="#c9d1d9" font-family="monospace" font-size="10">Longest streak: 10 days</text>
 </svg>
