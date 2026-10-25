@@ -1,42 +1,7 @@
 {
   "username": "malibalaji95",
-  "updated_at": "2026-10-24",
+  "updated_at": "2026-10-25",
   "days": [
-    {
-      "date": "2025-10-19",
-      "count": null,
-      "level": 0
-    },
-    {
-      "date": "2025-10-20",
-      "count": null,
-      "level": 0
-    },
-    {
-      "date": "2025-10-21",
-      "count": null,
-      "level": 0
-    },
-    {
-      "date": "2025-10-22",
-      "count": null,
-      "level": 0
-    },
-    {
-      "date": "2025-10-23",
-      "count": null,
-      "level": 0
-    },
-    {
-      "date": "2025-10-24",
-      "count": null,
-      "level": 0
-    },
-    {
-      "date": "2025-10-25",
-      "count": null,
-      "level": 0
-    },
     {
       "date": "2025-10-26",
       "count": null,
@@ -1855,13 +1820,18 @@
     {
       "date": "2026-10-24",
       "count": null,
+      "level": 1
+    },
+    {
+      "date": "2026-10-25",
+      "count": null,
       "level": 0
     }
   ],
   "stats": {
-    "days_recorded": 371,
-    "current_streak": 11,
-    "longest_streak": 11,
+    "days_recorded": 365,
+    "current_streak": 12,
+    "longest_streak": 12,
     "best_day": null
   }
 }

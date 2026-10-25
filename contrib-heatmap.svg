@@ -390,7 +390,7 @@
 <rect x="824" y="97" width="11" height="11" rx="3" fill="#0e4429" data-date="2026-10-21"><title>2026-10-21: level 1</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.729s" fill="freeze"/></rect>
 <rect x="824" y="112" width="11" height="11" rx="3" fill="#0e4429" data-date="2026-10-22"><title>2026-10-22: level 1</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.764s" fill="freeze"/></rect>
 <rect x="824" y="127" width="11" height="11" rx="3" fill="#0e4429" data-date="2026-10-23"><title>2026-10-23: level 1</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.799s" fill="freeze"/></rect>
-<rect x="824" y="142" width="11" height="11" rx="3" fill="#161b22" data-date="2026-10-24"><title>2026-10-24: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.834s" fill="freeze"/></rect>
+<rect x="824" y="142" width="11" height="11" rx="3" fill="#0e4429" data-date="2026-10-24"><title>2026-10-24: level 1</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.834s" fill="freeze"/></rect>
 <text x="44" y="180" fill="#8b949e" font-family="monospace" font-size="10">Less</text>
 <rect x="77" y="170" width="11" height="11" rx="3" fill="#161b22"/>
 <rect x="92" y="170" width="11" height="11" rx="3" fill="#0e4429"/>
@@ -398,6 +398,6 @@
 <rect x="122" y="170" width="11" height="11" rx="3" fill="#26a641"/>
 <rect x="137" y="170" width="11" height="11" rx="3" fill="#39d353"/>
 <text x="155" y="180" fill="#8b949e" font-family="monospace" font-size="10">More</text>
-<text x="44" y="208" fill="#c9d1d9" font-family="monospace" font-size="10">Current streak: 11 days</text>
-<text x="224" y="208" fill="#c9d1d9" font-family="monospace" font-size="10">Longest streak: 11 days</text>
+<text x="44" y="208" fill="#c9d1d9" font-family="monospace" font-size="10">Current streak: 12 days</text>
+<text x="224" y="208" fill="#c9d1d9" font-family="monospace" font-size="10">Longest streak: 12 days</text>
 </svg>
