@@ -63,10 +63,10 @@ I'm interested in building practical AI applications, exploring machine learning
 
 </div>
 
-## 📊 Weekly Contribution Pulse
+## 🏙️ My Contribution City
 
 <p align="center">
-  <img src="./weekly-pulse.svg" alt="Animated weekly contribution graph" width="100%"/>
+  <img src="./contrib-city.svg" alt="3D GitHub contribution city" width="100%"/>
 </p>
 
 ## `04` — TECHNOLOGY STACK
