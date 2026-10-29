@@ -1,31 +1,32 @@
 import json
 import math
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from xml.sax.saxutils import escape
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 INPUT_FILE = BASE_DIR / "data" / "contributions.json"
 OUTPUT_FILE = BASE_DIR / "contrib-round-year.svg"
 
-WIDTH = 1000
+WIDTH = 1100
 HEIGHT = 760
 
-CX = 360
-CY = 390
+CX = 390
+CY = 385
 
 INNER_RADIUS = 115
-OUTER_RADIUS = 290
+CELL_SIZE = 19
+CELL_GAP = 3
 
 BACKGROUND = "#ffffff"
 TEXT = "#171717"
 MUTED = "#777777"
 
 COLORS = [
-    "#e5e7eb",
-    "#c0f2ca",
-    "#83dfa0",
+    "#ebedf0",
+    "#9be9a8",
     "#40c463",
+    "#30a14e",
     "#216e39",
 ]
 
@@ -36,7 +37,7 @@ def load_data():
 
 
 def parse_days(data):
-    parsed = []
+    parsed = {}
 
     for item in data.get("days", []):
         date_text = item.get("date")
@@ -44,56 +45,78 @@ def parse_days(data):
         if not date_text:
             continue
 
-        raw_count = item.get("count")
+        try:
+            day_date = datetime.strptime(
+                date_text, "%Y-%m-%d"
+            ).date()
+        except ValueError:
+            continue
+
+        # Your actual JSON uses level, not count.
+        raw_level = item.get("level", 0)
 
         try:
-            count = int(raw_count) if raw_count is not None else 0
+            level = int(raw_level) if raw_level is not None else 0
         except (TypeError, ValueError):
-            count = 0
+            level = 0
 
-        parsed.append({
-            "date": datetime.strptime(date_text, "%Y-%m-%d"),
-            "count": max(0, count),
-        })
+        level = max(0, min(4, level))
 
-    parsed.sort(key=lambda item: item["date"])
+        parsed[day_date] = {
+            "date": day_date,
+            "level": level,
+        }
 
-    return parsed[-365:]
+    return parsed
+
+
+def get_calendar_days(days):
+    if not days:
+        raise ValueError("No contribution days found.")
+
+    last_date = max(days.keys())
+
+    # Show a full year ending at the latest date in the JSON.
+    first_date = last_date - timedelta(days=364)
+
+    # Align start to Sunday so the calendar starts at a full week.
+    first_date -= timedelta(days=(first_date.weekday() + 1) % 7)
+
+    calendar_days = []
+    current = first_date
+
+    while current <= last_date:
+        calendar_days.append(
+            days.get(
+                current,
+                {
+                    "date": current,
+                    "level": 0,
+                }
+            )
+        )
+
+        current += timedelta(days=1)
+
+    return calendar_days
 
 
 def polar_point(radius, angle):
     x = CX + radius * math.cos(angle)
     y = CY + radius * math.sin(angle)
-
     return x, y
 
 
-def color_for_count(count, max_count):
-    if count <= 0:
-        return COLORS[0]
-
-    ratio = count / max_count
-
-    if ratio <= 0.25:
-        return COLORS[1]
-    elif ratio <= 0.5:
-        return COLORS[2]
-    elif ratio <= 0.75:
-        return COLORS[3]
-
-    return COLORS[4]
-
-
 def render(days):
-    if not days:
-        raise ValueError("No contribution days found.")
+    calendar_days = get_calendar_days(days)
 
-    max_count = max(day["count"] for day in days)
-    max_count = max(max_count, 1)
+    # Use 7 rings for weekdays and 53 angular positions for weeks.
+    total_weeks = math.ceil(len(calendar_days) / 7)
 
-    total = sum(day["count"] for day in days)
-
-    best_day = max(days, key=lambda item: item["count"])
+    outer_radius = (
+        INNER_RADIUS
+        + total_weeks * (CELL_SIZE + CELL_GAP)
+    )
 
     svg = []
 
@@ -111,86 +134,110 @@ def render(days):
     svg.append(f"""
     <text x="60" y="65"
           font-family="Georgia, serif"
-          font-size="38"
+          font-size="40"
           fill="{TEXT}">
         Round the year
     </text>
 
-    <text x="60" y="95"
+    <text x="62" y="96"
           font-family="monospace"
-          font-size="12"
+          font-size="13"
           fill="{MUTED}">
-        YOUR CONTRIBUTIONS, WRAPPED INTO A CIRCLE
+        EVERY DAY, A CELL IN MY YEAR
     </text>
     """)
 
-    # One circular ring for each weekday.
-    ring_count = 7
+    # Draw each day as a cell:
+    # angle = week of year
+    # radius = weekday
+    for index, day in enumerate(calendar_days):
+        day_date = day["date"]
+        level = day["level"]
 
-    # Divide the year into angular slots.
-    slot_angle = (2 * math.pi) / len(days)
+        # Sunday = 0 ... Saturday = 6
+        weekday = (day_date.weekday() + 1) % 7
 
-    # Add a slight gap between contribution cells.
-    gap = 0.008
+        week_index = index // 7
 
-    # Draw rings from inside to outside.
-    for ring in range(ring_count):
-        radius = INNER_RADIUS + ring * 25
+        angle = (
+            -math.pi / 2
+            + (week_index / total_weeks) * 2 * math.pi
+        )
 
-        for index, day in enumerate(days):
-            angle = -math.pi / 2 + index * slot_angle
+        radius = (
+            INNER_RADIUS
+            + weekday * (CELL_SIZE + CELL_GAP)
+        )
 
-            start_angle = angle + gap
-            end_angle = angle + slot_angle - gap
+        angle_width = (
+            (CELL_SIZE / max(radius, 1))
+            * 0.85
+        )
 
-            # A small arc-shaped cell.
-            p1 = polar_point(radius, start_angle)
-            p2 = polar_point(radius + 21, start_angle)
-            p3 = polar_point(radius + 21, end_angle)
-            p4 = polar_point(radius, end_angle)
+        start_angle = angle - angle_width / 2
+        end_angle = angle + angle_width / 2
 
-            points = " ".join(
-                f"{x:.2f},{y:.2f}"
-                for x, y in [p1, p2, p3, p4]
-            )
+        r1 = radius
+        r2 = radius + CELL_SIZE
 
-            fill = color_for_count(day["count"], max_count)
+        p1 = polar_point(r1, start_angle)
+        p2 = polar_point(r2, start_angle)
+        p3 = polar_point(r2, end_angle)
+        p4 = polar_point(r1, end_angle)
 
-            delay = index * 0.004 + ring * 0.04
+        points = " ".join(
+            f"{x:.2f},{y:.2f}"
+            for x, y in [p1, p2, p3, p4]
+        )
 
-            svg.append(f"""
-            <polygon points="{points}"
-                     fill="{fill}"
-                     stroke="#ffffff"
-                     stroke-width="1">
-                <title>
-                    {day["date"].strftime("%d %b %Y")}:
-                    {day["count"]} contributions
-                </title>
+        fill = COLORS[level]
 
-                <animate
-                    attributeName="opacity"
-                    from="0"
-                    to="1"
-                    begin="{delay:.3f}s"
-                    dur="0.6s"
-                    fill="freeze"/>
-            </polygon>
-            """)
+        # Animate each cell appearing in sequence.
+        delay = index * 0.002
 
-    # Month labels around the circle.
+        svg.append(f"""
+        <polygon points="{points}"
+                 fill="{fill}"
+                 stroke="#ffffff"
+                 stroke-width="1"
+                 opacity="0">
+            <title>
+                {day_date.strftime("%d %b %Y")}:
+                contribution level {level}
+            </title>
+
+            <animate
+                attributeName="opacity"
+                from="0"
+                to="1"
+                begin="{delay:.3f}s"
+                dur="0.35s"
+                fill="freeze"/>
+        </polygon>
+        """)
+
+    # Month labels positioned around the ring.
     month_positions = {}
 
-    for index, day in enumerate(days):
-        month_key = day["date"].strftime("%b")
+    for index, day in enumerate(calendar_days):
+        day_date = day["date"]
+        month_key = (day_date.year, day_date.month)
 
         if month_key not in month_positions:
-            angle = -math.pi / 2 + index * slot_angle
-            month_positions[month_key] = angle
+            week_index = index // 7
 
-    for month, angle in month_positions.items():
-        label_radius = OUTER_RADIUS + 35
+            angle = (
+                -math.pi / 2
+                + (week_index / total_weeks) * 2 * math.pi
+            )
 
+            month_positions[month_key] = (
+                day_date.strftime("%b").upper(),
+                angle,
+            )
+
+    for month, angle in month_positions.values():
+        label_radius = outer_radius + 28
         x, y = polar_point(label_radius, angle)
 
         svg.append(f"""
@@ -200,24 +247,24 @@ def render(days):
               font-family="monospace"
               font-size="11"
               fill="{MUTED}">
-            {escape(month.upper())}
+            {escape(month)}
         </text>
         """)
 
-    # Center circle.
+    # Center circle and title.
     svg.append(f"""
-    <circle cx="{CX}" cy="{CY}" r="{INNER_RADIUS - 10}"
+    <circle cx="{CX}" cy="{CY}" r="{INNER_RADIUS - 8}"
             fill="#ffffff"/>
 
     <text x="{CX}" y="{CY - 12}"
           text-anchor="middle"
           font-family="Georgia, serif"
-          font-size="42"
+          font-size="34"
           fill="{TEXT}">
-        {total:,}
+        {len(calendar_days)}d
     </text>
 
-    <text x="{CX}" y="{CY + 20}"
+    <text x="{CX}" y="{CY + 18}"
           text-anchor="middle"
           font-family="monospace"
           font-size="11"
@@ -226,47 +273,9 @@ def render(days):
     </text>
     """)
 
-    # Statistics on the right.
-    svg.append(f"""
-    <text x="710" y="335"
-          font-family="Georgia, serif"
-          font-size="48"
-          fill="{TEXT}">
-        {total:,}
-    </text>
-
-    <text x="710" y="365"
-          font-family="monospace"
-          font-size="12"
-          fill="{MUTED}">
-        CONTRIBUTIONS
-    </text>
-
-    <text x="710" y="425"
-          font-family="Georgia, serif"
-          font-size="30"
-          fill="{TEXT}">
-        {best_day["count"]}
-    </text>
-
-    <text x="710" y="450"
-          font-family="monospace"
-          font-size="12"
-          fill="{MUTED}">
-        BEST DAY
-    </text>
-
-    <text x="710" y="490"
-          font-family="monospace"
-          font-size="12"
-          fill="{MUTED}">
-        {best_day["date"].strftime("%d %b %Y")}
-    </text>
-    """)
-
     # Legend.
     svg.append(f"""
-    <text x="60" y="710"
+    <text x="60" y="700"
           font-family="monospace"
           font-size="12"
           fill="{MUTED}">
@@ -274,20 +283,49 @@ def render(days):
     </text>
     """)
 
-    for i, color in enumerate(COLORS):
-        x = 110 + i * 28
+    for index, color in enumerate(COLORS):
+        x = 110 + index * 28
 
         svg.append(
-            f'<rect x="{x}" y="695" width="20" height="20" '
+            f'<rect x="{x}" y="685" '
+            f'width="20" height="20" '
             f'rx="3" fill="{color}"/>'
         )
 
     svg.append(f"""
-    <text x="265" y="710"
+    <text x="265" y="700"
           font-family="monospace"
           font-size="12"
           fill="{MUTED}">
         MORE
+    </text>
+
+    <text x="720" y="350"
+          font-family="Georgia, serif"
+          font-size="48"
+          fill="{TEXT}">
+        {sum(1 for d in calendar_days if d["level"] > 0)}
+    </text>
+
+    <text x="720" y="380"
+          font-family="monospace"
+          font-size="12"
+          fill="{MUTED}">
+        ACTIVE DAYS
+    </text>
+
+    <text x="720" y="445"
+          font-family="Georgia, serif"
+          font-size="30"
+          fill="{TEXT}">
+        {max(d["level"] for d in calendar_days)}
+    </text>
+
+    <text x="720" y="470"
+          font-family="monospace"
+          font-size="12"
+          fill="{MUTED}">
+        MAX LEVEL
     </text>
     """)
 
@@ -299,7 +337,8 @@ def render(days):
     )
 
     print(f"Created: {OUTPUT_FILE}")
-    print(f"Total contributions: {total:,}")
+    print(f"Contribution days: {len(calendar_days)}")
+    print(f"Active days: {sum(1 for d in calendar_days if d['level'] > 0)}")
 
 
 def main():
