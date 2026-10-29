@@ -63,6 +63,12 @@ I'm interested in building practical AI applications, exploring machine learning
 
 </div>
 
+## 📊 Weekly Contribution Pulse
+
+<p align="center">
+  <img src="./weekly-pulse.svg" alt="Animated weekly contribution graph" width="100%"/>
+</p>
+
 ## `04` — TECHNOLOGY STACK
 
 ### Programming Languages
