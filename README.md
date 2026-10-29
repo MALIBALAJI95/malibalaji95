@@ -63,10 +63,10 @@ I'm interested in building practical AI applications, exploring machine learning
 
 </div>
 
-## 🏙️ My Contribution City
+## 🌐 Round the Year
 
 <p align="center">
-  <img src="./contrib-city.svg" alt="3D GitHub contribution city" width="100%"/>
+  <img src="./contrib-round-year.svg" alt="Circular GitHub contribution visualization" width="100%"/>
 </p>
 
 ## `04` — TECHNOLOGY STACK
