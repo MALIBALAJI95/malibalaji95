@@ -1,10 +1,11 @@
 import json
 import math
 from pathlib import Path
-from datetime import datetime, date, timedelta
+from datetime import datetime, timedelta, date
 from xml.sax.saxutils import escape
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 INPUT_FILE = BASE_DIR / "data" / "contributions.json"
 OUTPUT_FILE = BASE_DIR / "contrib-round-year.svg"
 
@@ -18,12 +19,9 @@ INNER_RADIUS = 115
 CELL_SIZE = 19
 CELL_GAP = 3
 
-BACKGROUND = "#ffffff"
-TEXT = "#171717"
-MUTED = "#777777"
-
+# GitHub contribution colors
 COLORS = [
-    "#ebedf0",
+    "var(--empty)",
     "#9be9a8",
     "#40c463",
     "#30a14e",
@@ -52,7 +50,7 @@ def parse_days(data):
         except ValueError:
             continue
 
-        # Your actual JSON uses level, not count.
+        # This dataset uses "level", not "count".
         raw_level = item.get("level", 0)
 
         try:
@@ -76,11 +74,13 @@ def get_calendar_days(days):
 
     last_date = max(days.keys())
 
-    # Show a full year ending at the latest date in the JSON.
+    # Display a full 365-day calendar.
     first_date = last_date - timedelta(days=364)
 
-    # Align start to Sunday so the calendar starts at a full week.
-    first_date -= timedelta(days=(first_date.weekday() + 1) % 7)
+    # Align the calendar to Sunday.
+    first_date -= timedelta(
+        days=(first_date.weekday() + 1) % 7
+    )
 
     calendar_days = []
     current = first_date
@@ -104,18 +104,18 @@ def get_calendar_days(days):
 def polar_point(radius, angle):
     x = CX + radius * math.cos(angle)
     y = CY + radius * math.sin(angle)
+
     return x, y
 
 
 def render(days):
     calendar_days = get_calendar_days(days)
 
-    # Use 7 rings for weekdays and 53 angular positions for weeks.
     total_weeks = math.ceil(len(calendar_days) / 7)
 
     outer_radius = (
         INNER_RADIUS
-        + total_weeks * (CELL_SIZE + CELL_GAP)
+        + 6 * (CELL_SIZE + CELL_GAP)
     )
 
     svg = []
@@ -126,30 +126,76 @@ def render(days):
         f'viewBox="0 0 {WIDTH} {HEIGHT}">'
     )
 
+    # Theme variables adapt to light/dark mode.
+    svg.append("""
+    <style>
+        :root {
+            color-scheme: light dark;
+
+            --bg: #ffffff;
+            --text: #171717;
+            --muted: #777777;
+            --empty: #ebedf0;
+            --line: #e5e7eb;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0d1117;
+                --text: #e6edf3;
+                --muted: #8b949e;
+                --empty: #21262d;
+                --line: #30363d;
+            }
+        }
+
+        .theme-bg {
+            fill: var(--bg);
+        }
+
+        .theme-text {
+            fill: var(--text);
+        }
+
+        .theme-muted {
+            fill: var(--muted);
+        }
+
+        .theme-empty {
+            fill: var(--empty);
+        }
+
+        .contribution-cell {
+            stroke: var(--bg);
+            stroke-width: 1.5;
+        }
+    </style>
+    """)
+
+    # Background
     svg.append(
         f'<rect width="{WIDTH}" height="{HEIGHT}" '
-        f'fill="{BACKGROUND}"/>'
+        f'class="theme-bg"/>'
     )
 
-    svg.append(f"""
+    # Heading
+    svg.append("""
     <text x="60" y="65"
           font-family="Georgia, serif"
           font-size="40"
-          fill="{TEXT}">
+          class="theme-text">
         Round the year
     </text>
 
     <text x="62" y="96"
           font-family="monospace"
           font-size="13"
-          fill="{MUTED}">
+          class="theme-muted">
         EVERY DAY, A CELL IN MY YEAR
     </text>
     """)
 
-    # Draw each day as a cell:
-    # angle = week of year
-    # radius = weekday
+    # Circular contribution calendar
     for index, day in enumerate(calendar_days):
         day_date = day["date"]
         level = day["level"]
@@ -157,6 +203,7 @@ def render(days):
         # Sunday = 0 ... Saturday = 6
         weekday = (day_date.weekday() + 1) % 7
 
+        # Week position around the circular calendar
         week_index = index // 7
 
         angle = (
@@ -164,15 +211,15 @@ def render(days):
             + (week_index / total_weeks) * 2 * math.pi
         )
 
+        # Each weekday has its own radial ring.
         radius = (
             INNER_RADIUS
             + weekday * (CELL_SIZE + CELL_GAP)
         )
 
         angle_width = (
-            (CELL_SIZE / max(radius, 1))
-            * 0.85
-        )
+            CELL_SIZE / max(radius, 1)
+        ) * 0.85
 
         start_angle = angle - angle_width / 2
         end_angle = angle + angle_width / 2
@@ -192,15 +239,15 @@ def render(days):
 
         fill = COLORS[level]
 
-        # Animate each cell appearing in sequence.
         delay = index * 0.002
 
         svg.append(f"""
-        <polygon points="{points}"
-                 fill="{fill}"
-                 stroke="#ffffff"
-                 stroke-width="1"
-                 opacity="0">
+        <polygon
+            points="{points}"
+            fill="{fill}"
+            class="contribution-cell"
+            opacity="0">
+
             <title>
                 {day_date.strftime("%d %b %Y")}:
                 contribution level {level}
@@ -216,12 +263,16 @@ def render(days):
         </polygon>
         """)
 
-    # Month labels positioned around the ring.
+    # Month labels
     month_positions = {}
 
     for index, day in enumerate(calendar_days):
         day_date = day["date"]
-        month_key = (day_date.year, day_date.month)
+
+        month_key = (
+            day_date.year,
+            day_date.month,
+        )
 
         if month_key not in month_positions:
             week_index = index // 7
@@ -238,47 +289,107 @@ def render(days):
 
     for month, angle in month_positions.values():
         label_radius = outer_radius + 28
+
         x, y = polar_point(label_radius, angle)
 
         svg.append(f"""
-        <text x="{x:.2f}" y="{y:.2f}"
-              text-anchor="middle"
-              dominant-baseline="middle"
-              font-family="monospace"
-              font-size="11"
-              fill="{MUTED}">
+        <text
+            x="{x:.2f}"
+            y="{y:.2f}"
+            text-anchor="middle"
+            dominant-baseline="middle"
+            font-family="monospace"
+            font-size="11"
+            class="theme-muted">
             {escape(month)}
         </text>
         """)
 
-    # Center circle and title.
+    # Center circle
     svg.append(f"""
-    <circle cx="{CX}" cy="{CY}" r="{INNER_RADIUS - 8}"
-            fill="#ffffff"/>
+    <circle
+        cx="{CX}"
+        cy="{CY}"
+        r="{INNER_RADIUS - 8}"
+        class="theme-bg"/>
 
-    <text x="{CX}" y="{CY - 12}"
-          text-anchor="middle"
-          font-family="Georgia, serif"
-          font-size="34"
-          fill="{TEXT}">
-        {len(calendar_days)}d
+    <text
+        x="{CX}"
+        y="{CY - 12}"
+        text-anchor="middle"
+        font-family="Georgia, serif"
+        font-size="34"
+        class="theme-text">
+        365d
     </text>
 
-    <text x="{CX}" y="{CY + 18}"
-          text-anchor="middle"
-          font-family="monospace"
-          font-size="11"
-          fill="{MUTED}">
+    <text
+        x="{CX}"
+        y="{CY + 18}"
+        text-anchor="middle"
+        font-family="monospace"
+        font-size="11"
+        class="theme-muted">
         CONTRIBUTIONS
     </text>
     """)
 
-    # Legend.
+    # Statistics
+    active_days = sum(
+        1 for day in calendar_days
+        if day["level"] > 0
+    )
+
+    max_level = max(
+        day["level"] for day in calendar_days
+    )
+
     svg.append(f"""
-    <text x="60" y="700"
-          font-family="monospace"
-          font-size="12"
-          fill="{MUTED}">
+    <text
+        x="720"
+        y="350"
+        font-family="Georgia, serif"
+        font-size="48"
+        class="theme-text">
+        {active_days}
+    </text>
+
+    <text
+        x="720"
+        y="380"
+        font-family="monospace"
+        font-size="12"
+        class="theme-muted">
+        ACTIVE DAYS
+    </text>
+
+    <text
+        x="720"
+        y="445"
+        font-family="Georgia, serif"
+        font-size="30"
+        class="theme-text">
+        {max_level}
+    </text>
+
+    <text
+        x="720"
+        y="470"
+        font-family="monospace"
+        font-size="12"
+        class="theme-muted">
+        MAX LEVEL
+    </text>
+    """)
+
+    # Legend
+    svg.append("""
+    <text
+        x="60"
+        y="700"
+        font-family="monospace"
+        font-size="12"
+        class="theme-muted">
         LESS
     </text>
     """)
@@ -292,40 +403,14 @@ def render(days):
             f'rx="3" fill="{color}"/>'
         )
 
-    svg.append(f"""
-    <text x="265" y="700"
-          font-family="monospace"
-          font-size="12"
-          fill="{MUTED}">
+    svg.append("""
+    <text
+        x="265"
+        y="700"
+        font-family="monospace"
+        font-size="12"
+        class="theme-muted">
         MORE
-    </text>
-
-    <text x="720" y="350"
-          font-family="Georgia, serif"
-          font-size="48"
-          fill="{TEXT}">
-        {sum(1 for d in calendar_days if d["level"] > 0)}
-    </text>
-
-    <text x="720" y="380"
-          font-family="monospace"
-          font-size="12"
-          fill="{MUTED}">
-        ACTIVE DAYS
-    </text>
-
-    <text x="720" y="445"
-          font-family="Georgia, serif"
-          font-size="30"
-          fill="{TEXT}">
-        {max(d["level"] for d in calendar_days)}
-    </text>
-
-    <text x="720" y="470"
-          font-family="monospace"
-          font-size="12"
-          fill="{MUTED}">
-        MAX LEVEL
     </text>
     """)
 
@@ -338,7 +423,8 @@ def render(days):
 
     print(f"Created: {OUTPUT_FILE}")
     print(f"Contribution days: {len(calendar_days)}")
-    print(f"Active days: {sum(1 for d in calendar_days if d['level'] > 0)}")
+    print(f"Active days: {active_days}")
+    print(f"Maximum level: {max_level}")
 
 
 def main():
