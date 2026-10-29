@@ -11,7 +11,6 @@ OUTPUT_FILE = BASE_DIR / "weekly-pulse.svg"
 
 BACKGROUND = "#0d1117"
 FOREGROUND = "#c9d1d9"
-GREEN = "#30a14e"
 GRID = "#21262d"
 
 WIDTH = 1000
@@ -43,10 +42,20 @@ def parse_days(data):
 
     for item in days:
         date_text = item.get("date")
-        count = int(item.get("count", 0))
 
         if not date_text:
             continue
+
+        raw_count = item.get("count")
+
+        # Handle missing or null contribution counts safely.
+        if raw_count is None:
+            count = 0
+        else:
+            try:
+                count = int(raw_count)
+            except (ValueError, TypeError):
+                count = 0
 
         date = datetime.strptime(date_text, "%Y-%m-%d")
 
@@ -64,7 +73,6 @@ def group_by_week(days):
     weeks = []
 
     for day in days:
-        # Monday-based week index.
         week_key = day["date"].isocalendar()[:2]
 
         if not weeks or weeks[-1]["key"] != week_key:
@@ -87,7 +95,11 @@ def render_svg(weeks):
     chart_width = WIDTH - LEFT - RIGHT
     chart_height = HEIGHT - TOP - BOTTOM
 
-    max_total = max(week["total"] for week in weeks)
+    max_total = max(
+        (week["total"] for week in weeks),
+        default=0
+    )
+
     max_total = max(max_total, 1)
 
     slot_width = chart_width / len(weeks)
@@ -106,7 +118,7 @@ def render_svg(weeks):
         f'rx="14" fill="{BACKGROUND}"/>'
     )
 
-    # Heading
+    # Header
     svg.append(
         f'<text x="{LEFT}" y="32" '
         f'fill="{FOREGROUND}" '
@@ -135,21 +147,29 @@ def render_svg(weeks):
             f'stroke="{GRID}" stroke-width="1"/>'
         )
 
-    # Bars
+    # Weekly bars
     for index, week in enumerate(weeks):
         total = week["total"]
 
-        bar_height = (total / max_total) * chart_height
+        bar_height = (
+            total / max_total
+        ) * chart_height
 
-        x = LEFT + index * slot_width + (
-            slot_width - bar_width
-        ) / 2
+        x = (
+            LEFT
+            + index * slot_width
+            + (slot_width - bar_width) / 2
+        )
 
         y = TOP + chart_height - bar_height
 
         delay = index * 0.035
 
-        fill = MAX_BAR_COLOR if total == max_total else BAR_COLOR
+        fill = (
+            MAX_BAR_COLOR
+            if total == max_total and total > 0
+            else BAR_COLOR
+        )
 
         svg.append(
             f'<rect x="{x:.2f}" '
@@ -176,7 +196,7 @@ def render_svg(weeks):
             '</rect>'
         )
 
-        # Label every fourth week
+        # Show date labels every four weeks
         if index % 4 == 0 or index == len(weeks) - 1:
             label_date = week["days"][0]["date"]
             label = label_date.strftime("%b %d")
@@ -192,7 +212,7 @@ def render_svg(weeks):
                 '</text>'
             )
 
-    # Total contributions
+    # Calculate total from available daily counts
     total_contributions = sum(
         day["count"]
         for week in weeks
@@ -215,6 +235,8 @@ def render_svg(weeks):
     )
 
     print(f"Weekly pulse created: {OUTPUT_FILE}")
+    print(f"Weeks rendered: {len(weeks)}")
+    print(f"Total contributions: {total_contributions}")
 
 
 def main():
