@@ -59,8 +59,8 @@ jobs:
       - name: Generate heatmap SVG
         run: python scripts/render_heatmap_svg.py
         
-      - name: Generate contribution city SVG
-        run: python scripts/render_contrib_city_svg.py
+      - name: Generate round-the-year contribution SVG
+        run: python scripts/render_weekly_pulse_svg.py
 
       - name: Validate generated files
         run: |
