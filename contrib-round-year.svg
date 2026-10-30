@@ -2246,13 +2246,13 @@
 
         <polygon
             points="636.61,398.88 655.58,399.95 654.04,417.27 635.18,414.96"
-            fill="#40c463"
+            fill="#9be9a8"
             class="contribution-cell"
             opacity="0">
 
             <title>
                 07 Feb 2026:
-                contribution level 2
+                contribution level 1
             </title>
 
             <animate
@@ -3569,13 +3569,13 @@
 
         <polygon
             points="496.91,607.67 505.13,624.79 489.22,631.80 482.13,614.17"
-            fill="#30a14e"
+            fill="#40c463"
             class="contribution-cell"
             opacity="0">
 
             <title>
                 11 Apr 2026:
-                contribution level 3
+                contribution level 2
             </title>
 
             <animate
@@ -4325,13 +4325,13 @@
 
         <polygon
             points="364.21,497.07 359.95,515.59 341.97,510.10 348.78,492.36"
-            fill="#30a14e"
+            fill="#40c463"
             class="contribution-cell"
             opacity="0">
 
             <title>
                 17 May 2026:
-                contribution level 3
+                contribution level 2
             </title>
 
             <animate
@@ -4367,13 +4367,13 @@
 
         <polygon
             points="351.34,539.23 346.72,557.66 329.44,552.38 335.90,534.51"
-            fill="#40c463"
+            fill="#9be9a8"
             class="contribution-cell"
             opacity="0">
 
             <title>
                 19 May 2026:
-                contribution level 2
+                contribution level 1
             </title>
 
             <animate
@@ -4535,13 +4535,13 @@
 
         <polygon
             points="324.49,553.73 317.62,571.44 301.29,564.25 309.72,547.22"
-            fill="#40c463"
+            fill="#9be9a8"
             class="contribution-cell"
             opacity="0">
 
             <title>
                 27 May 2026:
-                contribution level 2
+                contribution level 1
             </title>
 
             <animate
@@ -4871,13 +4871,13 @@
 
         <polygon
             points="259.97,568.63 249.00,584.13 235.08,573.51 247.14,558.83"
-            fill="#40c463"
+            fill="#9be9a8"
             class="contribution-cell"
             opacity="0">
 
             <title>
                 12 Jun 2026:
-                contribution level 2
+                contribution level 1
             </title>
 
             <animate
@@ -5375,13 +5375,13 @@
 
         <polygon
             points="270.00,451.10 253.36,460.27 245.46,443.68 263.06,436.53"
-            fill="#40c463"
+            fill="#9be9a8"
             class="contribution-cell"
             opacity="0">
 
             <title>
                 06 Jul 2026:
-                contribution level 2
+                contribution level 1
             </title>
 
             <animate
@@ -5669,13 +5669,13 @@
 
         <polygon
             points="257.83,421.07 239.50,426.07 235.72,408.08 254.51,405.27"
-            fill="#40c463"
+            fill="#9be9a8"
             class="contribution-cell"
             opacity="0">
 
             <title>
                 20 Jul 2026:
-                contribution level 2
+                contribution level 1
             </title>
 
             <animate
@@ -6530,13 +6530,13 @@
 
         <polygon
             points="285.64,336.68 268.40,328.70 277.48,312.23 293.43,322.55"
-            fill="#40c463"
+            fill="#9be9a8"
             class="contribution-cell"
             opacity="0">
 
             <title>
                 30 Aug 2026:
-                contribution level 2
+                contribution level 1
             </title>
 
             <animate
@@ -6908,13 +6908,13 @@
 
         <polygon
             points="234.89,254.04 220.37,241.79 232.29,228.76 245.79,242.13"
-            fill="#40c463"
+            fill="#9be9a8"
             class="contribution-cell"
             opacity="0">
 
             <title>
                 17 Sep 2026:
-                contribution level 2
+                contribution level 1
             </title>
 
             <animate
@@ -6950,13 +6950,13 @@
 
         <polygon
             points="202.40,224.33 187.97,211.97 199.71,199.14 213.30,212.41"
-            fill="#40c463"
+            fill="#9be9a8"
             class="contribution-cell"
             opacity="0">
 
             <title>
                 19 Sep 2026:
-                contribution level 2
+                contribution level 1
             </title>
 
             <animate
@@ -7804,6 +7804,27 @@
                 from="0"
                 to="1"
                 begin="0.736s"
+                dur="0.35s"
+                fill="freeze"/>
+        </polygon>
+        
+
+        <polygon
+            points="355.39,162.68 352.47,143.90 369.85,141.83 371.42,160.77"
+            fill="var(--empty)"
+            class="contribution-cell"
+            opacity="0">
+
+            <title>
+                30 Oct 2026:
+                contribution level 0
+            </title>
+
+            <animate
+                attributeName="opacity"
+                from="0"
+                to="1"
+                begin="0.738s"
                 dur="0.35s"
                 fill="freeze"/>
         </polygon>
