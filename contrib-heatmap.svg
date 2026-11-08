@@ -21,8 +21,8 @@
 <text x="764" y="43" fill="#8b949e" font-family="monospace" font-size="9">Oct</text>
 <text x="824" y="43" fill="#8b949e" font-family="monospace" font-size="9">Nov</text>
 <rect x="44" y="52" width="11" height="11" rx="3" fill="#161b22" data-date="2025-11-02"><title>2025-11-02: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.000s" fill="freeze"/></rect>
-<rect x="44" y="67" width="11" height="11" rx="3" fill="#0e4429" data-date="2025-11-03"><title>2025-11-03: level 1</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.035s" fill="freeze"/></rect>
-<rect x="44" y="82" width="11" height="11" rx="3" fill="#0e4429" data-date="2025-11-04"><title>2025-11-04: level 1</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.070s" fill="freeze"/></rect>
+<rect x="44" y="67" width="11" height="11" rx="3" fill="#161b22" data-date="2025-11-03"><title>2025-11-03: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.035s" fill="freeze"/></rect>
+<rect x="44" y="82" width="11" height="11" rx="3" fill="#161b22" data-date="2025-11-04"><title>2025-11-04: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.070s" fill="freeze"/></rect>
 <rect x="44" y="97" width="11" height="11" rx="3" fill="#161b22" data-date="2025-11-05"><title>2025-11-05: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.105s" fill="freeze"/></rect>
 <rect x="44" y="112" width="11" height="11" rx="3" fill="#161b22" data-date="2025-11-06"><title>2025-11-06: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.140s" fill="freeze"/></rect>
 <rect x="44" y="127" width="11" height="11" rx="3" fill="#161b22" data-date="2025-11-07"><title>2025-11-07: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.175s" fill="freeze"/></rect>
@@ -390,7 +390,7 @@
 <rect x="824" y="97" width="11" height="11" rx="3" fill="#0e4429" data-date="2026-11-04"><title>2026-11-04: level 1</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.729s" fill="freeze"/></rect>
 <rect x="824" y="112" width="11" height="11" rx="3" fill="#161b22" data-date="2026-11-05"><title>2026-11-05: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.764s" fill="freeze"/></rect>
 <rect x="824" y="127" width="11" height="11" rx="3" fill="#0e4429" data-date="2026-11-06"><title>2026-11-06: level 1</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.799s" fill="freeze"/></rect>
-<rect x="824" y="142" width="11" height="11" rx="3" fill="#161b22" data-date="2026-11-07"><title>2026-11-07: level 0</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.834s" fill="freeze"/></rect>
+<rect x="824" y="142" width="11" height="11" rx="3" fill="#0e4429" data-date="2026-11-07"><title>2026-11-07: level 1</title><animate attributeName="opacity" from="0" to="1" dur="0.45s" begin="0.834s" fill="freeze"/></rect>
 <text x="44" y="180" fill="#8b949e" font-family="monospace" font-size="10">Less</text>
 <rect x="77" y="170" width="11" height="11" rx="3" fill="#161b22"/>
 <rect x="92" y="170" width="11" height="11" rx="3" fill="#0e4429"/>
@@ -398,6 +398,6 @@
 <rect x="122" y="170" width="11" height="11" rx="3" fill="#26a641"/>
 <rect x="137" y="170" width="11" height="11" rx="3" fill="#39d353"/>
 <text x="155" y="180" fill="#8b949e" font-family="monospace" font-size="10">More</text>
-<text x="44" y="208" fill="#c9d1d9" font-family="monospace" font-size="10">Current streak: 1 days</text>
+<text x="44" y="208" fill="#c9d1d9" font-family="monospace" font-size="10">Current streak: 2 days</text>
 <text x="224" y="208" fill="#c9d1d9" font-family="monospace" font-size="10">Longest streak: 23 days</text>
 </svg>
