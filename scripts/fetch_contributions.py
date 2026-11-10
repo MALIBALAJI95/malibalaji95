@@ -1,6 +1,8 @@
+
 import json
 import os
 import re
+import time
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -16,21 +18,90 @@ OUTPUT_FILE = DATA_DIR / "contributions.json"
 
 URL = f"https://github.com/users/{USERNAME}/contributions"
 
+MAX_ATTEMPTS = 5
+RETRY_DELAYS = [3, 6, 12, 24]
+
+
+def fetch_page():
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 Chrome/131.0.0.0 Safari/537.36"
+        ),
+        "Accept": "text/html,application/xhtml+xml,*/*",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Referer": f"https://github.com/{USERNAME}",
+    }
+
+    for attempt in range(MAX_ATTEMPTS):
+        try:
+            print(
+                f"GitHub request attempt "
+                f"{attempt + 1}/{MAX_ATTEMPTS}..."
+            )
+
+            response = requests.get(
+                URL,
+                headers=headers,
+                timeout=30
+            )
+
+            if response.status_code in (502, 503, 504):
+                raise requests.HTTPError(
+                    f"Temporary GitHub server error: "
+                    f"{response.status_code}"
+                )
+
+            response.raise_for_status()
+
+            return response
+
+        except requests.RequestException as error:
+            print(f"Request failed: {error}")
+
+            if attempt == MAX_ATTEMPTS - 1:
+                raise RuntimeError(
+                    "Unable to fetch GitHub contributions "
+                    "after all retry attempts."
+                ) from error
+
+            delay = RETRY_DELAYS[attempt]
+            print(f"Retrying in {delay} seconds...")
+            time.sleep(delay)
+
+
+def use_existing_data():
+    if OUTPUT_FILE.exists():
+        try:
+            with OUTPUT_FILE.open("r", encoding="utf-8") as file:
+                existing = json.load(file)
+
+            if existing.get("days"):
+                print(
+                    "WARNING: GitHub is temporarily unavailable."
+                )
+                print(
+                    "Keeping the previous contributions.json."
+                )
+                print("The workflow can continue with existing data.")
+                return True
+
+        except (json.JSONDecodeError, OSError):
+            pass
+
+    return False
+
 
 def fetch_contributions():
     print(f"Fetching contributions for {USERNAME}...")
 
-    headers = {
-        "User-Agent": "Mozilla/5.0 (compatible; GitHubProfileArt/1.0)"
-    }
+    try:
+        response = fetch_page()
+    except RuntimeError as error:
+        if use_existing_data():
+            return
 
-    response = requests.get(
-        URL,
-        headers=headers,
-        timeout=30
-    )
-
-    response.raise_for_status()
+        raise error
 
     soup = BeautifulSoup(response.text, "html.parser")
 
@@ -42,7 +113,7 @@ def fetch_contributions():
     if not cells:
         raise RuntimeError(
             "No contribution cells found. "
-            "GitHub may have changed its HTML or blocked the request."
+            "GitHub may have changed its HTML."
         )
 
     days = []
@@ -63,16 +134,18 @@ def fetch_contributions():
         if not 0 <= level <= 4:
             continue
 
-        # GitHub's public calendar does not always expose
-        # an exact count for every day. Store only counts
-        # that can be read reliably from the page.
         count = None
-
         label = cell.get("aria-label", "")
-        match = re.search(r"(\d[\d,]*) contribution", label)
+
+        match = re.search(
+            r"(\d[\d,]*) contribution",
+            label
+        )
 
         if match:
-            count = int(match.group(1).replace(",", ""))
+            count = int(
+                match.group(1).replace(",", "")
+            )
 
         days.append({
             "date": day_date.isoformat(),
@@ -82,8 +155,8 @@ def fetch_contributions():
 
     if not days:
         raise RuntimeError(
-            "The contribution page was loaded, "
-            "but no valid dates were extracted."
+            "GitHub returned a page, but no valid "
+            "contribution dates were extracted."
         )
 
     days.sort(key=lambda item: item["date"])
@@ -93,7 +166,9 @@ def fetch_contributions():
 
     recent_days = [
         day for day in days
-        if one_year_ago.isoformat() <= day["date"] <= today.isoformat()
+        if one_year_ago.isoformat()
+        <= day["date"]
+        <= today.isoformat()
     ]
 
     active_dates = {
@@ -102,6 +177,7 @@ def fetch_contributions():
         if day["level"] > 0
     }
 
+    # Current streak
     current_streak = 0
     streak_date = today
 
@@ -112,6 +188,7 @@ def fetch_contributions():
         current_streak += 1
         streak_date -= timedelta(days=1)
 
+    # Longest streak
     longest_streak = 0
     running_streak = 0
     previous_date = None
@@ -128,8 +205,13 @@ def fetch_contributions():
             else:
                 running_streak = 1
 
-            longest_streak = max(longest_streak, running_streak)
+            longest_streak = max(
+                longest_streak,
+                running_streak
+            )
+
             previous_date = current_date
+
         else:
             running_streak = 0
             previous_date = None
@@ -144,7 +226,7 @@ def fetch_contributions():
 
     result = {
         "username": USERNAME,
-        "updated_at": date.today().isoformat(),
+        "updated_at": today.isoformat(),
         "days": days,
         "stats": {
             "days_recorded": len(days),
@@ -156,7 +238,7 @@ def fetch_contributions():
 
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as file:
+    with OUTPUT_FILE.open("w", encoding="utf-8") as file:
         json.dump(result, file, indent=2)
 
     print(f"Saved {len(days)} contribution days.")
